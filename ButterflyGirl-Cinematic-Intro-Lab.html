@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ButterflyGirl — Cinematic Intro Lab</title>
+<style>
+:root{--ink:#fff8ff;--muted:#c4b6d9;--violet:#c9a8ff;--pink:#ffb8e9}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080611;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}button{font:inherit;cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:270px 1fr}.side{padding:26px 18px;background:#0d0a18;border-right:1px solid #ffffff16}.eyebrow{font-size:10px;letter-spacing:.24em;color:#c8b3f6;text-transform:uppercase}.side h1{font-size:25px;line-height:1.05;letter-spacing:-.04em;margin:12px 0}.side p{font-size:12px;line-height:1.6;color:#a99dbd;margin:0 0 22px}.choices{display:grid;gap:8px}.choice{display:flex;align-items:center;gap:10px;text-align:left;padding:11px;border:1px solid #ffffff18;background:#ffffff05;color:#f7eeff;border-radius:12px;transition:.2s}.choice:hover{transform:translateX(3px);background:#ffffff0d}.choice[aria-pressed=true]{border-color:#c6a3ff88;background:#a77bff18}.n{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#ffffff0b;color:#ddcaff;font-size:11px;flex:none}.choice b{display:block;font-size:12px}.choice small{display:block;color:#a69ab9;font-size:10px;margin-top:2px}.note{margin-top:20px!important;border-top:1px solid #ffffff17;padding-top:15px}
+.main{padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:11px;color:#b8abc9}.tag{border:1px solid #ffffff20;border-radius:99px;padding:7px 10px;font-size:10px;letter-spacing:.12em}.canvas{height:min(75vh,720px);min-height:530px;position:relative;overflow:hidden;border:1px solid #ffffff1e;border-radius:22px;background:#10091b;isolation:isolate}.intro{position:absolute;inset:0;display:none;overflow:hidden}.intro.active{display:block}.controls{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#9c90b1;font-size:11px}.controls button{border:1px solid #ffffff20;border-radius:99px;background:#ffffff08;color:#f4eaff;padding:8px 12px}.controls button:hover{background:#ffffff16}.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}.logo{font-size:clamp(25px,4vw,48px);font-weight:800;letter-spacing:.13em;text-transform:uppercase}.small{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:#d1bdf0}.sub{font-size:12px;letter-spacing:.1em;color:#c9bad8;margin-top:12px}.glow{position:absolute;inset:0;pointer-events:none}.stars{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 12% 22%,#fff 55%,transparent),radial-gradient(2px 2px at 80% 18%,#ffdcff 55%,transparent),radial-gradient(1px 1px at 75% 78%,#fff 55%,transparent),radial-gradient(2px 2px at 20% 80%,#cbb2ff 55%,transparent),radial-gradient(1px 1px at 48% 14%,#fff 55%,transparent);opacity:.55}
+button:focus-visible{outline:2px solid #e5c8ff;outline-offset:3px}
+/* 01: stage curtains + marquee reveal */
+#i1{background:radial-gradient(ellipse at 50% 45%,#573070,#1a102b 55%,#080611)}
+.curtain{position:absolute;inset:0;z-index:3;display:flex;pointer-events:none}.curtain span{width:50%;height:100%;background:repeating-linear-gradient(90deg,#260d37 0 18px,#3a1750 18px 36px);box-shadow:inset -12px 0 25px #08040d88;transition:transform 1.4s cubic-bezier(.7,0,.2,1)}.curtain span:last-child{background:repeating-linear-gradient(90deg,#3a1750 0 18px,#260d37 18px 36px);box-shadow:inset 12px 0 25px #08040d88}.active.play .curtain span:first-child{transform:translateX(-103%)}.active.play .curtain span:last-child{transform:translateX(103%)}.marquee{border:1px solid #f4c9ff66;padding:35px 42px;box-shadow:0 0 55px #da8bff20;position:relative;opacity:0;transform:scale(.86);transition:opacity .8s .8s,transform .8s .8s}.play .marquee{opacity:1;transform:scale(1)}.marquee:before,.marquee:after{content:"✦  ✧  ✦";position:absolute;left:0;right:0;color:#ffe0ff;letter-spacing:1.2em;font-size:10px}.marquee:before{top:-20px}.marquee:after{bottom:-20px}.marquee .logo{color:#fff2ff;text-shadow:0 0 24px #e6a8ff88}.stage-line{width:0;height:1px;background:#f8d9ff;margin:18px auto 0;transition:width 1s 1.3s}.play .stage-line{width:80%}
+/* 02: drawn portal and butterfly trail */
+#i2{background:radial-gradient(ellipse at center,#2b164a,#0b0816 70%)}.portal{width:min(42vw,270px);aspect-ratio:1;border-radius:50%;border:1px solid #e5bdff99;position:absolute;box-shadow:0 0 50px #b878ff25,inset 0 0 55px #b878ff20;transform:scale(.05) rotate(-45deg);opacity:0}.play .portal{animation:portalOpen 1.7s cubic-bezier(.18,.78,.16,1) forwards}.portal:before,.portal:after{content:"";position:absolute;inset:14px;border:1px solid #ffb7f766;border-radius:50%;transform:scaleX(.45) rotate(35deg)}.portal:after{transform:scaleX(.45) rotate(-35deg)}@keyframes portalOpen{to{transform:scale(1) rotate(0);opacity:1}}.trail{position:absolute;width:150px;height:150px;left:calc(50% - 75px);top:calc(50% - 75px);opacity:0}.play .trail{animation:orbit 3s 1s ease-in-out both}@keyframes orbit{0%{opacity:0;transform:rotate(0) translateX(-150px) scale(.2)}15%{opacity:1}70%{opacity:1;transform:rotate(300deg) translateX(140px) scale(1)}100%{opacity:0;transform:rotate(420deg) translateX(190px) scale(.4)}}.trail:before{content:"🦋";font-size:26px;filter:drop-shadow(0 0 12px #ffc4fa)}.portal-copy{opacity:0;transform:translateY(18px);transition:all .7s 1.5s}.play .portal-copy{opacity:1;transform:translateY(0)}
+/* 03: film title / editorial */
+#i3{background:#090a14}.film-bg{position:absolute;inset:-8%;background:linear-gradient(120deg,#10101e,#2d2348 45%,#101d30);transform:scale(1.12);transition:transform 7s linear}.play .film-bg{transform:scale(1)}.film-bg:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#080811dd,transparent 50%,#08081199),radial-gradient(ellipse at 70% 40%,#bca4ff35,transparent 45%)}.film-strip{position:absolute;inset:20px 0;border-top:1px solid #ffffff35;border-bottom:1px solid #ffffff35;opacity:0;transition:opacity .6s .3s}.play .film-strip{opacity:1}.film-copy{align-items:flex-start;text-align:left;left:10%;right:10%;inset:0}.film-over{font-size:10px;letter-spacing:.3em;color:#d4c5ff;opacity:0;transform:translateY(10px)}.play .film-over{animation:rise .7s .4s forwards}.film-title{font-family:Georgia,serif;font-size:clamp(42px,8vw,100px);font-weight:400;line-height:.9;letter-spacing:-.05em;max-width:800px;opacity:0;transform:translateY(30px);clip-path:inset(0 0 100% 0)}.play .film-title{animation:titleReveal 1.1s .8s cubic-bezier(.2,.7,.1,1) forwards}.film-bottom{margin-top:25px;font-size:11px;letter-spacing:.15em;color:#d4c7e8;opacity:0}.play .film-bottom{animation:rise .7s 1.6s forwards}@keyframes titleReveal{to{opacity:1;transform:translateY(0);clip-path:inset(0)}}@keyframes rise{to{opacity:1;transform:translateY(0)}}
+/* 04: enchanted garden growth */
+#i4{background:radial-gradient(ellipse at 50% 100%,#173c35,#0a171c 65%,#080d13)}.vine{position:absolute;bottom:-20%;width:42%;height:70%;border:2px solid #89f0bd55;border-color:transparent transparent transparent #89f0bd55;border-radius:50%;transform:rotate(20deg) scaleY(.1);opacity:0}.vine.left{left:0}.vine.right{right:0;transform:scaleX(-1) rotate(20deg) scaleY(.1)}.play .vine{animation:grow .9s .2s forwards}.play .vine.right{animation-delay:.4s}@keyframes grow{to{transform:rotate(20deg) scaleY(1);opacity:1}}.leaf{position:absolute;width:34px;height:17px;border-radius:100% 0 100% 0;background:linear-gradient(135deg,#8ef5bf,#276e63);box-shadow:0 0 20px #6af4b72a;opacity:0;transform:scale(0)}.leaf.l1{left:18%;top:35%;rotate:-35deg}.leaf.l2{left:28%;top:58%;rotate:30deg}.leaf.l3{right:19%;top:34%;rotate:30deg}.leaf.l4{right:29%;top:59%;rotate:-25deg}.play .leaf{animation:leafPop .5s 1s forwards}.play .l2,.play .l4{animation-delay:1.25s}@keyframes leafPop{to{opacity:.8;transform:scale(1)}}.garden-copy{opacity:0;transform:translateY(16px)}.play .garden-copy{animation:rise .8s 1.25s forwards}
+/* 05: glitch / signal handshake */
+#i5{background:#070c12;background-image:linear-gradient(#67ffe20a 1px,transparent 1px),linear-gradient(90deg,#67ffe20a 1px,transparent 1px);background-size:30px 30px}.signal{font:11px ui-monospace,monospace;letter-spacing:.18em;color:#73ffe0;margin-bottom:20px;opacity:0}.play .signal{animation:rise .4s .2s forwards}.glitch{font:800 clamp(26px,5vw,58px)/1 ui-monospace,monospace;letter-spacing:.06em;color:#d5fff8;position:relative;opacity:0;transform:scale(.9)}.play .glitch{animation:glitchIn .9s .6s forwards}@keyframes glitchIn{0%{opacity:0;transform:scale(.9);text-shadow:0 0 #ff4bd8}25%{opacity:1;transform:translateX(4px);text-shadow:-4px 0 #ff4bd8,4px 0 #37f9ff}40%{transform:translateX(-3px);text-shadow:3px 0 #ff4bd8,-3px 0 #37f9ff}60%{transform:translateX(0);text-shadow:0 0 #ff4bd8}100%{opacity:1;transform:scale(1);text-shadow:0 0 30px #48ffda55}}.terminal{font:10px ui-monospace,monospace;color:#7df9dc;margin-top:28px;opacity:0}.play .terminal{animation:rise .5s 1.4s forwards}.terminal span{animation:blink 1s step-end infinite}@keyframes blink{50%{opacity:0}}
+@media(max-width:760px){.app{grid-template-columns:1fr}.side{padding:18px 14px;border-right:0;border-bottom:1px solid #ffffff16}.side h1{font-size:21px}.side p{margin-bottom:14px}.choices{grid-template-columns:repeat(2,minmax(0,1fr))}.choice{padding:9px}.choice b{font-size:11px}.note{display:none}.main{padding:12px}.canvas{min-height:510px;height:66vh}.marquee{padding:30px 18px}.film-copy{left:7%;right:7%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+ <div class="eyebrow">ButterflyGirl / creative direction</div>
+ <h1>Not a loading screen.<br>An entrance.</h1>
+ <p>Five cinematic intro concepts. Each one has a different reveal sequence—not just a progress bar. Select a concept and replay its animation.</p>
+ <div class="choices">
+  <button class="choice" data-i="i1" aria-pressed="true"><span class="n">01</span><span><b>The Velvet Curtain</b><small>Stage reveal · grand entrance</small></span></button>
+  <button class="choice" data-i="i2" aria-pressed="false"><span class="n">02</span><span><b>Portal Bloom</b><small>Magic circle · butterfly trail</small></span></button>
+  <button class="choice" data-i="i3" aria-pressed="false"><span class="n">03</span><span><b>Dream Sequence</b><small>Cinematic title · film look</small></span></button>
+  <button class="choice" data-i="i4" aria-pressed="false"><span class="n">04</span><span><b>Enchanted Garden</b><small>Vines grow · world awakens</small></span></button>
+  <button class="choice" data-i="i5" aria-pressed="false"><span class="n">05</span><span><b>Dream.exe</b><small>Glitch handshake · cyber</small></span></button>
+ </div>
+ <p class="note">Prototype only. The demo uses CSS animation and text/emoji accents; it does not change your live website or replace its existing images.</p>
+</aside>
+<main class="main">
+ <div class="top"><span>INTERACTIVE INTRO PREVIEW / 5 CONCEPTS</span><span class="tag">CLICK TO EXPLORE</span></div>
+ <section class="canvas" id="canvas">
+  <article class="intro active play" id="i1">
+   <div class="glow" style="background:radial-gradient(ellipse at center,#b96bff15,transparent 58%)"></div><div class="stars"></div>
+   <div class="center" style="z-index:1"><div class="marquee"><div class="small">A world beyond the ordinary</div><div class="logo" style="margin-top:15px">ButterflyGirl</div><div class="stage-line"></div><div class="sub">The magic begins here</div></div></div>
+   <div class="curtain"><span></span><span></span></div>
+  </article>
+  <article class="intro" id="i2">
+   <div class="stars"></div><div class="center"><div class="portal"></div><div class="trail"></div><div class="portal-copy"><div class="small">Follow the light</div><div class="logo" style="margin-top:13px;text-shadow:0 0 25px #db9cff88">butterflygirl</div><div class="sub">A little magic found you.</div></div></div>
+  </article>
+  <article class="intro" id="i3">
+   <div class="film-bg"></div><div class="film-strip"></div><div class="center film-copy"><div class="film-over">AN UNREAL LITTLE UNIVERSE / PRESENTS</div><div class="film-title">Somewhere<br>between dream<br>and magic.</div><div class="film-bottom">BUTTERFLYGIRL — YOUR NEXT LITTLE ESCAPE</div></div>
+  </article>
+  <article class="intro" id="i4">
+   <div class="stars"></div><div class="vine left"></div><div class="vine right"></div><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i><i class="leaf l4"></i>
+   <div class="center garden-copy"><div class="small" style="color:#a6f4c7">Step softly, something is growing</div><div class="logo" style="margin-top:15px;color:#e2ffe9;text-shadow:0 0 25px #8effbf45">ButterflyGirl</div><div class="sub">Welcome to the enchanted side.</div></div>
+  </article>
+  <article class="intro" id="i5">
+   <div class="glow" style="background:radial-gradient(ellipse at center,#00ffd514,transparent 60%)"></div><div class="center"><div class="signal">[ SIGNAL FOUND ] &nbsp; [ DREAMSPACE LINKED ]</div><div class="glitch">BUTTERFLY_GIRL</div><div class="terminal">> booting wonder.exe<br>> loading personality... OK<br>> opening portal<span>_</span></div></div>
+  </article>
+ </section>
+ <div class="controls"><span id="caption">01 / The Velvet Curtain — stage-like reveal</span><div style="display:flex;gap:7px"><button id="replay">↻ Replay intro</button><button id="next">Next concept →</button></div></div>
+</main>
+</div>
+<script>
+const choices=[...document.querySelectorAll('.choice')], intros=[...document.querySelectorAll('.intro')];
+const captions=['01 / The Velvet Curtain — stage-like reveal','02 / Portal Bloom — magic circle and butterfly trail','03 / Dream Sequence — cinematic title reveal','04 / Enchanted Garden — the world grows around you','05 / Dream.exe — glitchy digital handshake'];
+let selected=0;
+function play(index){selected=(index+choices.length)%choices.length;choices.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===selected)));intros.forEach((x,i)=>{x.classList.remove('active','play');if(i===selected){x.classList.add('active');void x.offsetWidth;x.classList.add('play')}});document.getElementById('caption').textContent=captions[selected]}
+choices.forEach((b,i)=>b.addEventListener('click',()=>play(i)));
+document.getElementById('next').addEventListener('click',()=>play(selected+1));
+document.getElementById('replay').addEventListener('click',()=>play(selected));
+</script>
+</body></html>
